@@ -51,8 +51,30 @@ end
 -- Arrange apps to different spaces & windows.
 function arrange_apps()
   local windows = {
+    -- Left Monitor
+    {"Microsoft Outlook", nil, hs.screen.allScreens()[3], hs.geometry.rect{0, (1/3), (2/3), (2/3)}, nil, nil},
+    {"Google Chrome", nil, hs.screen.allScreens()[3], hs.geometry.rect{2/3, 0, 0.12, 0.5}, nil, nil},
 
+    -- Middle Monitor
+    {"Visual Studio Code", nil, hs.screen.allScreens()[1], hs.geometry.rect{0, 0, (2/3), 1}, nil, nil},
+
+    -- Right Monitor
+    {"iTerm", "1. Shell", hs.screen.allScreens()[2], hs.geometry.rect{(2/3), 0, (1/3), 1}, nil, nil},
+    {"Microsoft OneNote", nil, hs.screen.allScreens()[2], hs.geometry.rect{0, 0, 1, 1}, nil, nil},
+    {"Slack", nil, hs.screen.allScreens()[2], hs.geometry.rect{0, 0.3, 0.5, 0.7}, nil, nil}
   }
 
   hs.layout.apply(windows);
+end
 
+-- Individual Application Hotkeys
+hs.fnutils.each({
+  { key = "c", app = "Google Chrome" },
+  { key = "l", app = "Slack" },
+  { key = "t", app = "iTerm" },
+  { key = "o", app = "Microsoft Outlook" },
+  { key = "g", app = "TogglDesktop" },
+  { key = "z", app = "Visual Studio Code" }
+}, function(object)
+  hotkey.bind(cma, object.key, function() hs.application.launchOrFocus(object.app) end)
+end)
